@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Birthday Surprise</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: black;
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      color: white;
+    }
+
+    .curtain {
+      position: absolute;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(to right, #8B0000, #B22222);
+      top: 0;
+      z-index: 2;
+      animation: openCurtain 3s forwards ease-in-out;
+    }
+
+    .curtain.left {
+      left: 0;
+      border-right: 2px solid #111;
+    }
+
+    .curtain.right {
+      right: 0;
+      border-left: 2px solid #111;
+    }
+
+    @keyframes openCurtain {
+      to {
+        width: 0;
+      }
+    }
+
+    .container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeIn 2s ease 3s forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    input[type="password"] {
+      padding: 10px 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 25px;
+      font-size: 16px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #message {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #ff4d4d;
+    }
+
+    .balloon {
+      position: absolute;
+      width: 40px;
+      height: 50px;
+      background: radial-gradient(circle, #ff4d4d 40%, #d60000);
+      border-radius: 50% 50% 50% 50%;
+      animation: float 6s infinite ease-in;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh); opacity: 1; }
+      100% { transform: translateY(-120vh); opacity: 0; }
+    }
+
+    .poppers {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 8px;
+      height: 12px;
+      background-color: yellow;
+      animation: pop 3s linear infinite;
+    }
+
+    @keyframes pop {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(100vh); opacity: 0; }
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Curtains -->
+  <div class="curtain left"></div>
+  <div class="curtain right"></div>
+
+  <!-- Poppers and Balloons -->
+  <div class="poppers" id="poppers"></div>
+
+  <!-- Center Content -->
+  <div class="container">
+    <h1>🎉 Enter Surprise Code 🎉</h1>
+    <input type="password" id="codeInput" placeholder="Enter the secret code">
+    <br>
+    <button onclick="checkCode()">Unlock</button>
+    <div id="message"></div>
+  </div>
+  <script>
+    // Start music on interaction if blocked
+    document.addEventListener('click', () => {
+      document.getElementById("bgMusic").play().catch(() => {});
+    });
+
+    function checkCode() {
+      const input = document.getElementById("codeInput").value.trim();
+      const msg = document.getElementById("message");
+
+      if (input === "07.08.2010") {
+        msg.style.color = 'lightgreen';
+        msg.textContent = "Unlocked! 🎊";
+        setTimeout(() => {
+          window.location.href = "page2.html";
+        }, 1500);
+      } else {
+        msg.style.color = '#ff4d4d';
+        msg.textContent = "Oops! Try again 💔";
+      }
+    }
+
+    // Generate Balloons
+    for (let i = 0; i < 15; i++) {
+      const b = document.createElement("div");
+      b.className = "balloon";
+      b.style.left = Math.random() * 100 + "vw";
+      b.style.animationDelay = Math.random() * 5 + "s";
+      b.style.backgroundColor = ["#ff4d4d", "#ffcc00", "#00ccff", "#cc66ff"][i % 4];
+      document.body.appendChild(b);
+    }
+
+    // Generate Poppers
+    for (let i = 0; i < 50; i++) {
+      const c = document.createElement("div");
+      c.className = "confetti";
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.top = Math.random() * 50 + "px";
+      c.style.backgroundColor = ["#ff69b4", "#00ffcc", "#ffff00", "#00bfff"][i % 4];
+      c.style.animationDelay = Math.random() * 2 + "s";
+      c.style.animationDuration = 2 + Math.random() * 2 + "s";
+      document.getElementById("poppers").appendChild(c);
+    }
+  </script>
+
+</body>
+</html>

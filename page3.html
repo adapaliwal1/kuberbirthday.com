@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Gift Surprise</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: 'Brush Script MT', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .gift-container {
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .box {
+      width: 120px;
+      height: 120px;
+      background: #ff69b4;
+      position: relative;
+      animation: bounce 1s ease-in-out;
+      border-radius: 10px;
+    }
+
+    .lid {
+      width: 120px;
+      height: 20px;
+      background: #ff1493;
+      position: absolute;
+      top: -20px;
+      left: 0;
+      border-radius: 10px;
+      animation: openLid 1.5s forwards;
+      animation-delay: 1s;
+    }
+
+    @keyframes openLid {
+      to {
+        transform: rotate(-30deg) translateY(-50px);
+      }
+    }
+
+    @keyframes bounce {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .balloon {
+      width: 40px;
+      height: 60px;
+      background: red;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 0;
+      animation: float 6s infinite;
+    }
+
+    .balloon::after {
+      content: '';
+      width: 2px;
+      height: 30px;
+      background: white;
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100px); opacity: 0; }
+      30% { opacity: 1; }
+      100% { transform: translateY(-300px); opacity: 0; }
+    }
+
+    .popper {
+      position: absolute;
+      top: -50px;
+      width: 100px;
+      height: 100px;
+      background-image: url('https://t3.ftcdn.net/jpg/01/10/26/34/360_F_110263419_6d9oWmooHp0tLqQrG6ypqQk7KRqxIkSE.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      opacity: 0;
+      animation: popperShow 1s forwards;
+      animation-delay: 1.3s;
+    }
+
+    @keyframes popperShow {
+      to {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
+
+    .images {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+      animation-delay: 2s;
+    }
+
+    .images img {
+      width: 150px;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 2px solid red;
+      transition: transform 0.3s;
+    }
+
+    .images img:hover {
+      transform: scale(1.1);
+    }
+
+    .typed-msg {
+      margin-top: 20px;
+      font-size: 36px;
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+      display: inline-block;
+      width: 0;
+      animation: none;
+    }
+
+    .typed-msg::after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      background-color: black;
+      animation: blink 1s steps(1) infinite;
+      right: 0;
+    }
+
+    @keyframes typingFixed {
+      from { width: 0; }
+      to { width: var(--final-width); }
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="gift-container">
+    <div class="lid"></div>
+    <div class="box"></div>
+    <div class="popper" style="left: -100px;"></div>
+    <div class="popper" style="right: -100px;"></div>
+  </div>
+
+  <!-- Balloons -->
+  <div class="balloon" style="left: 20%; animation-delay: 0s;"></div>
+  <div class="balloon" style="left: 50%; animation-delay: 1s;"></div>
+  <div class="balloon" style="left: 75%; animation-delay: 2s;"></div>
+
+  <!-- Images -->
+  <div class="images">
+    <img src="https://i.pinimg.com/736x/42/54/da/4254da6314a19253778d6a4639c03d87.jpg" onclick="showMessage('Tu fuddu shuru ti c yaa bd ch course krya 😊')">
+    <img src="https://www.wishbday.com/wp-content/uploads/2022/06/happy-bday-10.jpg" onclick="showMessage(' aho aaja aja besti kruu teri 🎉')">
+    <img src="https://i.pinimg.com/564x/6a/42/69/6a4269b6b161235329382215c7a6c829.jpg" onclick="showMessage('Jada khush na ho shmi jeb khli hon vli a teri ❤️😊')">
+  </div>
+
+  <div class="typed-msg" id="typedMsg"></div>
+
+  <script>
+    function showMessage(text) {
+      const msg = document.getElementById("typedMsg");
+      msg.innerText = text;
+
+      // Show full text instantly to measure width
+      msg.style.width = "fit-content";
+      msg.style.animation = "none";
+      msg.offsetHeight; // trigger reflow
+      const fullWidth = msg.offsetWidth + "px";
+
+      // Prepare animation
+      msg.style.setProperty('--final-width', fullWidth);
+      msg.style.width = "0";
+      msg.style.animation = "typingFixed 4s steps(40, end) forwards";
+    }
+  </script>
+</body>
+</html>
